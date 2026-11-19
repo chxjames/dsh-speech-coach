@@ -1,0 +1,39 @@
+# dsh-speech-coach — one-plugin bundle.
+#
+# Registers the published speech-coach MCP server (npm: speech-coach) as the
+# analyze_speech tool, so a chat can turn a video into a score card without
+# leaving the conversation. The server speaks stdio and needs no API key: the
+# Whisper weights download on the first run and are cached afterwards.
+#
+# Why `cmd /c npx`: on Windows there is no executable called `npx` — it is
+# `npx.cmd`, a batch shim, and the MCP client spawns the command directly with
+# no shell, so a bare `npx` fails with ENOENT. `cmd /c` runs the shim the way a
+# terminal would. On macOS and Linux change the two lines to:
+#
+#   command: npx
+#   args: ["-y", "speech-coach"]
+#
+# Pinning: `npx -y speech-coach` resolves the latest published version, which is
+# what `claude mcp add speech-coach -- npx -y speech-coach` does elsewhere. Write
+# `speech-coach@0.1.0` here instead if a future release should not be picked up
+# on its own.
+#
+# Timeouts are wide on purpose: the first call installs the package and fetches
+# ~80 MB of model weights, and a three-minute talk takes about a minute to score
+# on CPU.
+
+- insert:
+    - id: mcp-speech-coach
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: speech-coach
+        transport: stdio
+        command: cmd
+        args:
+          - '/c'
+          - 'npx'
+          - '-y'
+          - 'speech-coach'
+        startupTimeoutMs: 60000
+        toolCallTimeoutMs: 1800000
+        failOnStartupError: false

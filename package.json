@@ -1,0 +1,26 @@
+{
+  "name": "dsh-speech-coach",
+  "version": "0.1.0",
+  "description": "Score a speech video from chat: pace, pauses, pitch, fillers, framing, and the two or three things to fix. Wraps the speech-coach MCP server.",
+  "type": "module",
+  "main": "./index.mjs",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "index.mjs",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md"
+  ],
+  "keywords": [
+    "dsh",
+    "speech",
+    "presentation",
+    "mcp"
+  ],
+  "license": "MIT",
+  "author": "Shunhao Xu"
+}
